@@ -8,7 +8,7 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   try {
-    const { topic } = await req.json();
+    const { topic }: { topic: string } = await req.json();
 
     const output = await replicate.run(
       "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
