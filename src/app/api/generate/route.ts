@@ -1,17 +1,15 @@
-// src/app/api/generate/route.ts
 import { NextResponse } from 'next/server';
 import Replicate from 'replicate';
 
 // Initialize Replicate client
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
+  auth: process.env.REPLICATE_API_TOKEN!,
 });
 
 export async function POST(req: Request) {
   try {
     const { topic } = await req.json();
-    
-    // Use Replicate to run LLaMA
+
     const output = await replicate.run(
       "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
       {
@@ -27,35 +25,34 @@ Activities: List 3-5 engaging learning activities
 Make sure to format each section with clear headings.`,
           max_new_tokens: 2000,
           temperature: 0.7,
-          system_prompt: "You are an expert educational content creator specializing in creating structured, engaging lessons."
-        }
+          system_prompt:
+            "You are an expert educational content creator specializing in creating structured, engaging lessons.",
+        },
       }
     );
-    
-    // Join the output array into a single string
+
     const response = Array.isArray(output) ? output.join('') : output.toString();
-    
-    // Parse the AI response into structured lesson data
+
     const lesson = {
       title: extractTitle(response) || `Understanding ${topic}`,
       description: extractDescription(response) || `Learn about ${topic} and its applications.`,
-      outcomes: extractListItems(response, "outcomes") || [
+      outcomes: extractListItems(response, 'outcomes') || [
         `Understand the basics of ${topic}`,
         `Explain the importance of ${topic} in context`,
-        `Apply knowledge of ${topic} in practical situations`
+        `Apply knowledge of ${topic} in practical situations`,
       ],
-      keyConcepts: extractListItems(response, "concepts") || [
+      keyConcepts: extractListItems(response, 'concepts') || [
         `Definition of ${topic}`,
         `History and development of ${topic}`,
-        `Applications and significance`
+        `Applications and significance`,
       ],
-      activities: extractListItems(response, "activities") || [
+      activities: extractListItems(response, 'activities') || [
         `Research project on ${topic}`,
         `Group discussion about ${topic}`,
-        `Practical demonstration of ${topic}`
-      ]
+        `Practical demonstration of ${topic}`,
+      ],
     };
-    
+
     return NextResponse.json(lesson);
   } catch (error) {
     console.error('AI API error:', error);
@@ -63,31 +60,46 @@ Make sure to format each section with clear headings.`,
   }
 }
 
-// Helper functions to parse AI response
-function extractTitle(text) {
+// -----------------------------
+// ✅ Typed Helper Functions
+// -----------------------------
+
+function extractTitle(text: string): string | null {
   const titleMatch = text.match(/Title:?\s*([^\n]+)/i);
   return titleMatch ? titleMatch[1].trim() : null;
 }
 
-function extractDescription(text) {
+function extractDescription(text: string): string | null {
   const descMatch = text.match(/Description:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z])/i);
   return descMatch ? descMatch[1].trim() : null;
 }
 
-function extractListItems(text, type) {
-  const patterns = {
+function extractListItems(
+  text: string,
+  type: 'outcomes' | 'concepts' | 'activities'
+): string[] | null {
+  const patterns: Record<string, RegExp> = {
     outcomes: /Learning Outcomes:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z])/i,
     concepts: /Key Concepts:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z])/i,
-    activities: /Activities:?(?:\s*)([\s\S]+?)(?:\n\n|$)/i
+    activities: /Activities:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z]|$)/i,
   };
-  
+
   const sectionMatch = text.match(patterns[type]);
   if (!sectionMatch) return null;
-  
-  // Extract list items, assuming they start with number, dash, or asterisk
-  const listItems = sectionMatch[1].split('\n')
-    .map(line => line.replace(/^[\d\-\*\.\s]+/, '').trim())
-    .filter(line => line.length > 0);
-  
+
+  const listItems = sectionMatch[1]
+    .split('\n')
+    .map((line) => line.replace(/^[\d\-*\.\s]+/, '').trim())
+    .filter((line) => line.length > 0);
+
   return listItems.length > 0 ? listItems : null;
+}
+
+function extractValue(text: string, ...keywords: string[]): string | null {
+  for (const keyword of keywords) {
+    const regex = new RegExp(`${keyword}:?\\s*([^\\n]+)`, 'i');
+    const match = text.match(regex);
+    if (match) return match[1].trim();
+  }
+  return null;
 }
