@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📘 ClassPilot
 
-## Getting Started
+**ClassPilot** is an AI-powered course authoring tool that helps you quickly generate structured, high-quality educational modules based on a topic you provide. It’s designed for educators, content creators, and curriculum designers looking to save time while maintaining quality.
 
-First, run the development server:
+## 🚀 Features
+
+- ✨ **Generate Lessons Instantly**  
+  Just type in a topic and get a complete lesson with title, description, learning outcomes, key concepts, and activities.
+
+- 🔍 **Smart Module Suggestions**  
+  Automatically generates module names, difficulty levels, prerequisites, and estimated time for your lessons.
+
+- 📝 **Rich Text Editing**  
+  Use an intuitive editor to customize the lesson description as needed.
+
+- 💾 **Save Lessons into Modules**  
+  Organize your content into modules and view all saved lessons with detailed metadata.
+
+- ⚡ **Powered by LLaMA-2 via Replicate API**  
+  Uses advanced large language models to generate accurate and structured educational content.
+
+## 🛠 Tech Stack
+
+- **Frontend:** React (Next.js 15), Tailwind CSS, Tiptap Editor  
+- **Backend:** Next.js API routes  
+- **AI:** Replicate API (LLaMA 2 - 70B Chat Model)
+
+## 🧪 How It Works
+
+1. Enter a topic (e.g., "Photosynthesis", "Machine Learning").
+2. The app fetches a fully structured lesson from the AI.
+3. You can review, edit the description, and see auto-suggested metadata.
+4. Save the lesson as a module.
+5. View all your saved modules with clean, organized structure.
+
+## 📦 Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone https://github.com/your-username/ClassPilot.git
+cd ClassPilot
+npm install
