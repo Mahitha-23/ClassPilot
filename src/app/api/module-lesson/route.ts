@@ -1,10 +1,9 @@
-// src/app/api/module-lesson/route.ts
 import { NextResponse } from 'next/server';
 import Replicate from 'replicate';
 
 // Initialize Replicate client
 const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN || '',
+  auth: process.env.REPLICATE_API_TOKEN!,
 });
 
 interface LessonResponse {
@@ -20,9 +19,8 @@ interface LessonResponse {
 
 export async function POST(req: Request) {
   try {
-    const { moduleName } = await req.json();
-    
-    // Use Replicate to run LLaMA
+    const { moduleName }: { moduleName: string } = await req.json();
+
     const output = await replicate.run(
       "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
       {
@@ -41,15 +39,13 @@ Estimated Time: How long this lesson would take to complete (e.g., 30 minutes, 1
 Make sure to format each section with clear headings and ensure the content is directly relevant to the module title.`,
           max_new_tokens: 2000,
           temperature: 0.7,
-          system_prompt: "You are an expert educational content creator specializing in creating structured, engaging lessons that fit within larger educational modules."
-        }
+          system_prompt: "You are an expert educational content creator specializing in creating structured, engaging lessons that fit within larger educational modules.",
+        },
       }
     );
-    
-    // Join the output array into a single string
+
     const response = Array.isArray(output) ? output.join('') : String(output);
-    
-    // Parse the AI response into structured lesson data
+
     const lesson: LessonResponse = {
       title: extractTitle(response) || `Lesson for ${moduleName}`,
       description: extractDescription(response) || `This lesson covers key topics within ${moduleName}.`,
@@ -72,7 +68,7 @@ Make sure to format each section with clear headings and ensure the content is d
       prerequisites: extractValue(response, "prerequisites") || "",
       estimatedTime: extractValue(response, "time", "estimated time") || "30 minutes"
     };
-    
+
     return NextResponse.json(lesson);
   } catch (error) {
     console.error('AI API error:', error);
@@ -80,7 +76,10 @@ Make sure to format each section with clear headings and ensure the content is d
   }
 }
 
-// Helper functions to parse AI response
+// -----------------------------
+// ✅ Typed Helper Functions
+// -----------------------------
+
 function extractTitle(text: string): string | null {
   const titleMatch = text.match(/Title:?\s*([^\n]+)/i);
   return titleMatch ? titleMatch[1].trim() : null;
@@ -91,26 +90,28 @@ function extractDescription(text: string): string | null {
   return descMatch ? descMatch[1].trim() : null;
 }
 
-function extractListItems(text: string, type: "outcomes" | "concepts" | "activities"): string[] | null {
+function extractListItems(
+  text: string,
+  type: "outcomes" | "concepts" | "activities"
+): string[] | null {
   const patterns: Record<string, RegExp> = {
     outcomes: /Learning Outcomes:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z])/i,
     concepts: /Key Concepts:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z])/i,
-    activities: /Activities:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z]|$)/i
+    activities: /Activities:?(?:\s*)([\s\S]+?)(?:\n\n|\n[A-Z]|$)/i,
   };
-  
+
   const sectionMatch = text.match(patterns[type]);
   if (!sectionMatch) return null;
-  
-  // Extract list items, assuming they start with number, dash, or asterisk
-  const listItems = sectionMatch[1].split('\n')
-    .map(line => line.replace(/^[\d\-\*\.\s]+/, '').trim())
-    .filter(line => line.length > 0);
-  
+
+  const listItems = sectionMatch[1]
+    .split('\n')
+    .map((line) => line.replace(/^[\d\-*\.\s]+/, '').trim())
+    .filter((line) => line.length > 0);
+
   return listItems.length > 0 ? listItems : null;
 }
 
 function extractValue(text: string, ...keywords: string[]): string | null {
-  // Search for any of the provided keywords
   for (const keyword of keywords) {
     const regex = new RegExp(`${keyword}:?\\s*([^\\n]+)`, 'i');
     const match = text.match(regex);
