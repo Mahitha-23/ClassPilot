@@ -35,8 +35,8 @@
 
 ## 📸 Screenshots
 
-### 🔹 Home Page
-![Home Page](./public/PHOTO-2025-05-07-15-54-17.jpg)
+### 🔹 Lesson Generated
+![Lesson Generated](./public/PHOTO-2025-05-07-15-54-17.jpg)
 
 ### 🔹 Lesson Generated
 ![Lesson Generated](./public/PHOTO-2025-05-07-15-54-38.jpg)
