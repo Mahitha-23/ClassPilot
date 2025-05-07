@@ -33,6 +33,18 @@
 4. Save the lesson as a module.
 5. View all your saved modules with clean, organized structure.
 
+## 📸 Screenshots
+
+### 🔹 Home Page
+![Home Page](./public/PHOTO-2025-05-07-15-54-17.jpg)
+
+### 🔹 Lesson Generated
+![Lesson Generated](./public/PHOTO-2025-05-07-15-54-38.jpg)
+
+### 🔹 Saved Modules View
+![Saved Modules](./public/PHOTO-2025-05-07-15-56-25.j)
+
+
 ## 📦 Installation
 
 ```bash
