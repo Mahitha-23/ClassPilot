@@ -42,7 +42,7 @@
 ![Lesson Generated](./public/PHOTO-2025-05-07-15-54-38.jpg)
 
 ### 🔹 Saved Modules View
-![Saved Modules](./public/PHOTO-2025-05-07-15-56-25.j)
+![Saved Modules](./public/PHOTO-2025-05-07-15-56-25.jpg)
 
 
 ## 📦 Installation
