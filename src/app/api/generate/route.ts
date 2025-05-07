@@ -94,12 +94,3 @@ function extractListItems(
 
   return listItems.length > 0 ? listItems : null;
 }
-
-function extractValue(text: string, ...keywords: string[]): string | null {
-  for (const keyword of keywords) {
-    const regex = new RegExp(`${keyword}:?\\s*([^\\n]+)`, 'i');
-    const match = text.match(regex);
-    if (match) return match[1].trim();
-  }
-  return null;
-}
