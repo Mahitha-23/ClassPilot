@@ -47,13 +47,3 @@ Keep your response brief and structured exactly as requested.`,
     return NextResponse.json({ error: 'Failed to generate module suggestions' }, { status: 500 });
   }
 }
-
-// ✅ Type-safe helper function
-function extractValue(text: string, ...keywords: string[]): string | null {
-  for (const keyword of keywords) {
-    const regex = new RegExp(`${keyword}:?\\s*([^\\n]+)`, 'i');
-    const match = text.match(regex);
-    if (match) return match[1].trim();
-  }
-  return null;
-}
