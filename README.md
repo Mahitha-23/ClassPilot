@@ -27,7 +27,7 @@
 
 ## 🧪 How It Works
 
-1. Enter a topic (e.g., "Photosynthesis", "Machine Learning").
+1. Enter a topic (e.g., "DBMS", "Machine Learning").
 2. The app fetches a fully structured lesson from the AI.
 3. You can review, edit the description, and see auto-suggested metadata.
 4. Save the lesson as a module.
